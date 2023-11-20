@@ -234,9 +234,15 @@ namespace LargeXlsx
                                    + " applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\"",
                     _numberFormats[style.Key.NumberFormat], _fonts[style.Key.Font], _fills[style.Key.Fill],
                     _borders[style.Key.Border]);
+
+                if (style.Key.Alignment != XlsxAlignment.Default) streamWriter.Write(" applyAlignment=\"1\"");
+                if (style.Key.Protection != XlsxProtection.Default) streamWriter.Write(" applyProtection=\"1\"");
+
+                streamWriter.WriteLine(">");
+
                 if (style.Key.Alignment != XlsxAlignment.Default)
                 {
-                    streamWriter.Write(" applyAlignment=\"1\"><alignment");
+                    streamWriter.Write("<alignment");
                     var a = style.Key.Alignment;
                     if (a.HorizontalType != XlsxAlignment.Horizontal.General) streamWriter.Write(" horizontal=\"{0}\"", Util.EnumToAttributeValue(a.HorizontalType));
                     if (a.VerticalType != XlsxAlignment.Vertical.Bottom) streamWriter.Write(" vertical=\"{0}\"", Util.EnumToAttributeValue(a.VerticalType));
@@ -246,12 +252,19 @@ namespace LargeXlsx
                     if (a.ShrinkToFit) streamWriter.Write(" shrinkToFit=\"1\"");
                     if (a.TextRotation != 0) streamWriter.Write(" textRotation=\"{0}\"", a.TextRotation);
                     if (a.WrapText) streamWriter.Write(" wrapText=\"1\"");
-                    streamWriter.WriteLine("/></xf>");
+                    streamWriter.Write("/>");
                 }
-                else
+
+                if (style.Key.Protection != XlsxProtection.Default)
                 {
-                    streamWriter.WriteLine("/>");
+                    streamWriter.Write("<protection");
+                    var p = style.Key.Protection;
+                    if (!p.Locked) streamWriter.WriteLine(" locked=\"0\"");
+                    if (p.HiddenFormula) streamWriter.WriteLine(" hidden=\"1\"");
+                    streamWriter.Write("/>");
                 }
+
+                streamWriter.WriteLine("</xf>");
             }
             streamWriter.WriteLine("</cellXfs>");
         }

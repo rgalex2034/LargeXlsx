@@ -57,7 +57,7 @@ public static class Large
         using var xlsxWriter = new XlsxWriter(stream, compressionLevel: CompressionLevel.Level3, requireCellReferences: requireCellReferences);
         var whiteFont = new XlsxFont("Calibri", 11, Color.White, bold: true);
         var blueFill = new XlsxFill(Color.FromArgb(0, 0x45, 0x86));
-        var headerStyle = new XlsxStyle(whiteFont, blueFill, XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default);
+        var headerStyle = new XlsxStyle(whiteFont, blueFill, XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default, XlsxProtection.Default);
         var numberStyle = XlsxStyle.Default.With(XlsxNumberFormat.ThousandTwoDecimal);
 
         xlsxWriter.BeginWorksheet("Sheet1", 1, 1);

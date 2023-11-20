@@ -31,29 +31,32 @@ namespace LargeXlsx
 {
     public class XlsxStyle : IEquatable<XlsxStyle>
     {
-        public static readonly XlsxStyle Default = new XlsxStyle(XlsxFont.Default, XlsxFill.None, XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default);
+        public static readonly XlsxStyle Default = new XlsxStyle(XlsxFont.Default, XlsxFill.None, XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default, XlsxProtection.Default);
 
         public XlsxFont Font { get; }
         public XlsxFill Fill { get; }
         public XlsxBorder Border { get; }
         public XlsxNumberFormat NumberFormat { get; }
         public XlsxAlignment Alignment { get; }
+        public XlsxProtection Protection { get; }
         private int? _hashCode;
 
-        public XlsxStyle(XlsxFont font, XlsxFill fill, XlsxBorder border, XlsxNumberFormat numberFormat, XlsxAlignment alignment)
+        public XlsxStyle(XlsxFont font, XlsxFill fill, XlsxBorder border, XlsxNumberFormat numberFormat, XlsxAlignment alignment, XlsxProtection protection)
         {
             Font = font;
             Fill = fill;
             Border = border;
             NumberFormat = numberFormat;
             Alignment = alignment;
+            Protection = protection;
         }
 
-        public XlsxStyle With(XlsxFont font) => new XlsxStyle(font, Fill, Border, NumberFormat, Alignment);
-        public XlsxStyle With(XlsxFill fill) => new XlsxStyle(Font, fill, Border, NumberFormat, Alignment);
-        public XlsxStyle With(XlsxBorder border) => new XlsxStyle(Font, Fill, border, NumberFormat, Alignment);
-        public XlsxStyle With(XlsxNumberFormat numberFormat) => new XlsxStyle(Font, Fill, Border, numberFormat, Alignment);
-        public XlsxStyle With(XlsxAlignment alignment) => new XlsxStyle(Font, Fill, Border, NumberFormat, alignment);
+        public XlsxStyle With(XlsxFont font) => new XlsxStyle(font, Fill, Border, NumberFormat, Alignment, Protection);
+        public XlsxStyle With(XlsxFill fill) => new XlsxStyle(Font, fill, Border, NumberFormat, Alignment, Protection);
+        public XlsxStyle With(XlsxBorder border) => new XlsxStyle(Font, Fill, border, NumberFormat, Alignment, Protection);
+        public XlsxStyle With(XlsxNumberFormat numberFormat) => new XlsxStyle(Font, Fill, Border, numberFormat, Alignment, Protection);
+        public XlsxStyle With(XlsxAlignment alignment) => new XlsxStyle(Font, Fill, Border, NumberFormat, alignment, Protection);
+        public XlsxStyle With(XlsxProtection protection) => new XlsxStyle(Font, Fill, Border, NumberFormat, Alignment, protection);
 
         #region Equality members
         public override bool Equals(object obj)
@@ -87,6 +90,7 @@ namespace LargeXlsx
             hashCode = hashCode * -1521134295 + Border.GetHashCode();
             hashCode = hashCode * -1521134295 + NumberFormat.GetHashCode();
             hashCode = hashCode * -1521134295 + Alignment.GetHashCode();
+            hashCode = hashCode * -1521134295 + Protection.GetHashCode();
             return hashCode;
         }
 

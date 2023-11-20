@@ -58,7 +58,8 @@ public static class StyledLargeCreateStyles
             new XlsxFill(Color.FromArgb(0, 0x45, 0x86)),
             XlsxBorder.None,
             XlsxNumberFormat.General,
-            XlsxAlignment.Default);
+            XlsxAlignment.Default,
+            XlsxProtection.Default);
 
         xlsxWriter.BeginWorksheet("Sheet1", 1, 1);
         xlsxWriter.BeginRow();

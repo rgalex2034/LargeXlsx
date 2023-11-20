@@ -36,7 +36,7 @@ public static class RowFormatting
     {
         using var stream = new FileStream($"{nameof(RowFormatting)}.xlsx", FileMode.Create, FileAccess.Write);
         using var xlsxWriter = new XlsxWriter(stream);
-        var blueStyle = new XlsxStyle(XlsxFont.Default.With(Color.White), new XlsxFill(Color.FromArgb(0, 0x45, 0x86)), XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default);
+        var blueStyle = new XlsxStyle(XlsxFont.Default.With(Color.White), new XlsxFill(Color.FromArgb(0, 0x45, 0x86)), XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default, XlsxProtection.Default);
         xlsxWriter
             .BeginWorksheet("Sheet 1")
             .BeginRow().Write("A1").Write("B1").Write("C1")

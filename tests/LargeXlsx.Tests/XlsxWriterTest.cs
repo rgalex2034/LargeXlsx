@@ -99,14 +99,15 @@ public static class XlsxWriterTest
             var whiteFont = new XlsxFont("Segoe UI", 9, System.Drawing.Color.White, bold: true);
             var blueFill = new XlsxFill(System.Drawing.Color.FromArgb(0, 0x45, 0x86));
             var yellowFill = new XlsxFill(System.Drawing.Color.FromArgb(0xff, 0xff, 0x88));
-            var headerStyle = new XlsxStyle(whiteFont, blueFill, XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default);
+            var headerStyle = new XlsxStyle(whiteFont, blueFill, XlsxBorder.None, XlsxNumberFormat.General, XlsxAlignment.Default, XlsxProtection.Default);
             var highlightStyle = XlsxStyle.Default.With(yellowFill);
             var dateStyle = XlsxStyle.Default.With(XlsxNumberFormat.ShortDateTime);
+            var lockedStyle = XlsxStyle.Default.With(XlsxProtection.Default.WithLocked(false));
 
             xlsxWriter
                 .BeginWorksheet("Sheet&'<1>\"")
                 .SetDefaultStyle(headerStyle)
-                .BeginRow().Write("Col<1>").Write("Col2").Write("Col&3")
+                .BeginRow().Write("Col<1>").Write("Col2").Write("Col&3").Write("Col4", lockedStyle)
                 .BeginRow().Write().Write("Sub2").Write("Sub3")
                 .SetDefaultStyle(XlsxStyle.Default)
                 .BeginRow().Write("Row3").Write(42).Write(-1, highlightStyle)
@@ -125,6 +126,7 @@ public static class XlsxWriterTest
             sheet.Cells["A1"].Value.Should().Be("Col<1>");
             sheet.Cells["B1"].Value.Should().Be("Col2");
             sheet.Cells["C1"].Value.Should().Be("Col&3");
+            sheet.Cells["D1"].Style.Locked.Should().BeFalse();
             sheet.Cells["A2"].Value.Should().BeNull();
             sheet.Cells["B2"].Value.Should().Be("Sub2");
             sheet.Cells["C2"].Value.Should().Be("Sub3");

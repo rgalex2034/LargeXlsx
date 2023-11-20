@@ -63,7 +63,8 @@ public static class StyledLarge
             new XlsxFill(Color.FromArgb(0, 0x45, 0x86)),
             XlsxBorder.None,
             XlsxNumberFormat.General,
-            XlsxAlignment.Default);
+            XlsxAlignment.Default,
+            XlsxProtection.Default);
         var cellStyles = Enumerable.Repeat(0, 100)
             .Select(_ => XlsxStyle.Default.With(new XlsxFill(Color.FromArgb(rnd.Next(256), rnd.Next(256), rnd.Next(256)))))
             .ToList();

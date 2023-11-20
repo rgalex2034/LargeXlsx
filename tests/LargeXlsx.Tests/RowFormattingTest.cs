@@ -64,7 +64,8 @@ public static class RowFormattingTest
             new XlsxFill(Color.FromArgb(0, 0x45, 0x86)),
             XlsxBorder.None,
             XlsxNumberFormat.General,
-            XlsxAlignment.Default);
+            XlsxAlignment.Default,
+            XlsxProtection.Default);
         using var stream = new MemoryStream();
         using (var xlsxWriter = new XlsxWriter(stream))
             xlsxWriter.BeginWorksheet("Sheet 1").BeginRow(style: blueStyle).Write("Test");

@@ -16,7 +16,8 @@ public static class HeaderFooter
             new XlsxFill(Color.FromArgb(0, 0x45, 0x86)),
             XlsxStyle.Default.Border,
             XlsxStyle.Default.NumberFormat,
-            XlsxAlignment.Default);
+            XlsxAlignment.Default,
+            XlsxProtection.Default);
         var highlightStyle = XlsxStyle.Default.With(new XlsxFill(Color.FromArgb(0xff, 0xff, 0x88)));
         var dateStyle = XlsxStyle.Default.With(XlsxNumberFormat.ShortDateTime);
         var borderedStyle = highlightStyle.With(XlsxBorder.Around(new XlsxBorder.Line(Color.DeepPink, XlsxBorder.Style.Dashed)));
