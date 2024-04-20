@@ -1,7 +1,7 @@
 ﻿/*
 LargeXlsx - Minimalistic .net library to write large XLSX files
 
-Copyright 2020-2023 Salvatore ISAJA. All rights reserved.
+Copyright 2020-2024 Salvatore ISAJA. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -109,7 +109,7 @@ namespace LargeXlsx
             _streamWriter.Write("<row");
             if (_requireCellReferences || _needsRef)
             {
-                _streamWriter.Write(" r =\"");
+                _streamWriter.Write(" r=\"");
                 _streamWriter.Write(CurrentRowNumber);
                 _streamWriter.Write("\"");
                 _needsRef = false;
@@ -151,8 +151,8 @@ namespace LargeXlsx
                 WriteCellRef();
                 WriteStyle(styleId);
                 _streamWriter.Write("/>\n");
+                CurrentColumnNumber++;
             }
-            CurrentColumnNumber++;
         }
 
         public void Write(string value, XlsxStyle style)
@@ -279,7 +279,7 @@ namespace LargeXlsx
         {
             _headerFooter = headerFooter;
         }
-        
+
         private void WriteCellRef()
         {
             if (_requireCellReferences || _needsRef)
@@ -439,18 +439,26 @@ namespace LargeXlsx
         {
             if (_headerFooter == null)
                 return;
-            
-            // Different first page header and footer.
             var differentFirst = _headerFooter.FirstHeader != null || _headerFooter.FirstFooter != null;
-            // Different odd and even page headers and footers.
             var differentOddEven = _headerFooter.EvenHeader != null || _headerFooter.EvenFooter != null;
-            _streamWriter.Write("<headerFooter alignWithMargins=\"{0}\" differentFirst=\"{1}\" differentOddEven=\"{2}\" scaleWithDoc=\"{3}\">", Util.BoolToInt(_headerFooter.Settings.AlignWithMargins), Util.BoolToInt(differentFirst), Util.BoolToInt(differentOddEven), Util.BoolToInt(_headerFooter.Settings.ScaleWithDoc));
-            if (_headerFooter.OddHeader != null) _streamWriter.Write("<oddHeader>{0}</oddHeader>", Util.EscapeXmlText(_headerFooter.OddHeader.WriteText()));
-            if (_headerFooter.OddFooter != null) _streamWriter.Write("<oddFooter>{0}</oddFooter>", Util.EscapeXmlText(_headerFooter.OddFooter.WriteText()));
-            if (_headerFooter.EvenHeader != null) _streamWriter.Write("<evenHeader>{0}</evenHeader>", Util.EscapeXmlText(_headerFooter.EvenHeader.WriteText()));
-            if (_headerFooter.EvenFooter != null) _streamWriter.Write("<evenFooter>{0}</evenFooter>", Util.EscapeXmlText(_headerFooter.EvenFooter.WriteText()));
-            if (_headerFooter.FirstHeader != null) _streamWriter.Write("<firstHeader>{0}</firstHeader>", Util.EscapeXmlText(_headerFooter.FirstHeader.WriteText()));
-            if (_headerFooter.FirstFooter != null) _streamWriter.Write("<firstFooter>{0}</firstFooter>", Util.EscapeXmlText(_headerFooter.FirstFooter.WriteText()));
+            _streamWriter.Write(
+                "<headerFooter alignWithMargins=\"{0}\" differentFirst=\"{1}\" differentOddEven=\"{2}\" scaleWithDoc=\"{3}\">",
+                Util.BoolToInt(_headerFooter.AlignWithMargins),
+                Util.BoolToInt(differentFirst),
+                Util.BoolToInt(differentOddEven),
+                Util.BoolToInt(_headerFooter.ScaleWithDoc));
+            if (_headerFooter.OddHeader != null)
+                _streamWriter.Write("<oddHeader>{0}</oddHeader>", Util.EscapeXmlText(_headerFooter.OddHeader));
+            if (_headerFooter.OddFooter != null)
+                _streamWriter.Write("<oddFooter>{0}</oddFooter>", Util.EscapeXmlText(_headerFooter.OddFooter));
+            if (_headerFooter.EvenHeader != null)
+                _streamWriter.Write("<evenHeader>{0}</evenHeader>", Util.EscapeXmlText(_headerFooter.EvenHeader));
+            if (_headerFooter.EvenFooter != null)
+                _streamWriter.Write("<evenFooter>{0}</evenFooter>", Util.EscapeXmlText(_headerFooter.EvenFooter));
+            if (_headerFooter.FirstHeader != null)
+                _streamWriter.Write("<firstHeader>{0}</firstHeader>", Util.EscapeXmlText(_headerFooter.FirstHeader));
+            if (_headerFooter.FirstFooter != null)
+                _streamWriter.Write("<firstFooter>{0}</firstFooter>", Util.EscapeXmlText(_headerFooter.FirstFooter));
             _streamWriter.Write("</headerFooter>");
         }
     }

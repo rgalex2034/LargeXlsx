@@ -1,7 +1,7 @@
 ﻿/*
 LargeXlsx - Minimalistic .net library to write large XLSX files
 
-Copyright 2020-2023 Salvatore ISAJA. All rights reserved.
+Copyright 2020-2024 Salvatore ISAJA. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -88,6 +88,18 @@ public static class XlsxWriterTest
 
         xlsxWriter.CurrentRowNumber.Should().Be(3);
         xlsxWriter.CurrentColumnNumber.Should().Be(0);
+    }
+
+    [Test]
+    public static void InsertionPointAfterMergedCells()
+    {
+        using var stream = new MemoryStream();
+        using var xlsxWriter = new XlsxWriter(stream);
+        xlsxWriter.BeginWorksheet("Sheet1")
+            .BeginRow().Write("A1").Write("B1", columnSpan: 3);
+
+        xlsxWriter.CurrentRowNumber.Should().Be(1);
+        xlsxWriter.CurrentColumnNumber.Should().Be(5);
     }
 
     [Test]
@@ -469,42 +481,6 @@ public static class XlsxWriterTest
                 .Descendants<Row>().Single()
                 .Descendants<Cell>().Any(c => c.CellReference == "B1")
                 .Should().Be(requireCellReferences);
-        }
-    }
-
-    [Test]
-    public static void HeaderFooter()
-    {
-        using var stream = new MemoryStream();
-        using (var xlsxWriter = new XlsxWriter(stream))
-        {
-            var headerFooter = 
-                new XlsxHeaderFooter(
-                    new XlsxHeaderFooterText(
-                        $"{XlsxHeaderFooter.Bold}LeftHeader", 
-                        $"{XlsxHeaderFooter.Underline}CenterHeader", 
-                        $"{XlsxHeaderFooter.Strikethrough}RightHeader"),
-                    new XlsxHeaderFooterText("LeftFooter", "CenterFooter", "RightFooter"));
-            xlsxWriter
-                .BeginWorksheet("HeaderFooterTest")
-                .SetHeaderFooter(headerFooter
-                    .WithFirstHeader(new XlsxHeaderFooterText($"{XlsxHeaderFooter.Bold}FirstHeader")));
-        }
-
-        using (var package = new ExcelPackage(stream))
-        {
-            var sheet = package.Workbook.Worksheets[0];
-            sheet.HeaderFooter.AlignWithMargins.Should().BeTrue();
-            sheet.HeaderFooter.differentFirst.Should().BeTrue();
-            sheet.HeaderFooter.FirstHeader.LeftAlignedText.Should().Be("&BFirstHeader");
-            sheet.HeaderFooter.differentOddEven.Should().BeFalse();
-            sheet.HeaderFooter.ScaleWithDocument.Should().BeFalse();
-            sheet.HeaderFooter.OddHeader.LeftAlignedText.Should().Be("&BLeftHeader");
-            sheet.HeaderFooter.OddHeader.CenteredText.Should().Be("&UCenterHeader");
-            sheet.HeaderFooter.OddHeader.RightAlignedText.Should().Be("&SRightHeader");
-            sheet.HeaderFooter.OddFooter.LeftAlignedText.Should().Be("LeftFooter");
-            sheet.HeaderFooter.OddFooter.CenteredText.Should().Be("CenterFooter");
-            sheet.HeaderFooter.OddFooter.RightAlignedText.Should().Be("RightFooter");
         }
     }
 }

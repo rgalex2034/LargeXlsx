@@ -1,7 +1,7 @@
 ﻿/*
 LargeXlsx - Minimalistic .net library to write large XLSX files
 
-Copyright 2020-2023 Salvatore ISAJA. All rights reserved.
+Copyright 2020-2024 Salvatore ISAJA. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -56,7 +56,7 @@ namespace LargeXlsx
         public string GetRelativeColumnName(int offsetFromCurrentColumn) => Util.GetColumnName(CurrentColumnNumber + offsetFromCurrentColumn);
         public static string GetColumnName(int columnIndex) => Util.GetColumnName(columnIndex);
 
-        public XlsxWriter(Stream stream, CompressionLevel compressionLevel = CompressionLevel.Level3, bool useZip64 = false, bool requireCellReferences = false)
+        public XlsxWriter(Stream stream, CompressionLevel compressionLevel = CompressionLevel.Level3, bool useZip64 = false, bool requireCellReferences = true)
         {
             _worksheets = new List<Worksheet>();
             _stylesheet = new Stylesheet();
